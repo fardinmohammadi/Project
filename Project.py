@@ -6,8 +6,20 @@ bot = Updater(Token)
 
 
 def START (bot,update):
+
+    message = update.message
+    chat = message.chat
+    message_id = message.message_id
+    chat_id = chat.id
+    first_name = chat.first_name
+    text = message.text
+
+    if "username" in chat:
+        username = chat.username
+
+    print(message,chat,message_id,chat_id,first_name,text,username)
+
     
-    print(update)
 
 
 bot.dispatcher.add_handler(
