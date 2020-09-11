@@ -1,10 +1,12 @@
-from telegram.ext import Updater,CommandHandler,CallbackQueryHandler
+from telegram.ext import Updater,CommandHandler,CallbackQueryHandler,MessageHandler,Filters
 from telegram import InlineKeyboardButton,InlineKeyboardMarkup
+import re
 
 
 Token = "1170278827:AAEpPtSxhDDosbKth9i1Pg9eqPI9jhrwZWY"
 bot = Updater(Token)
 
+#======================================================================================================================
 
 def START (bot,update):
 
@@ -44,9 +46,20 @@ def CALLBACK_DATA (bot,update):
     
 def MESSAGE (bot,update):
 
-    pass
+
+    p = re.compile(r'^09([0-9]{9})$')
+    result = p.match(update.message.text)
+    
+    if result == None :
+
+        bot.send_message(update.message.chat.id,"شماره همراه شما صحیح نمی‌باشد، لطفا شماره همراه خود را به درستی وارد کنید")
+
+    elif result != None :
+        bot.send_message(update.message.chat.id,"شماره همراه شما به درستی دریافت شد")
 
 
+
+#======================================================================================================================
 
 bot.dispatcher.add_handler(
     
@@ -67,5 +80,14 @@ bot.dispatcher.add_handler(
 )
 
 
+bot.dispatcher.add_handler(
+
+    MessageHandler(
+
+        Filters.text,MESSAGE
+    )
+)
+
+#======================================================================================================================
 bot.start_polling()
 bot.idle()
